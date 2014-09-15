@@ -16,9 +16,16 @@ class HelloWorld(restful.Resource):
 
 class HelloLater(restful.Resource):
     def get(self):
-        task = sq.enqueue_in(timedelta(minutes=1), count_words_at_url, ('http://nvie.com',))
+        task = sq.enqueue_in(timedelta(minutes=1), count_words_at_url, 'http://nvie.com')
         return {'later': task.key}
 
 
-api.add_resource(HelloWorld, '/')
+class ScheduledQueue(restful.Resource):
+    def get(self):
+        tasks_scheduled = sq.get_jobs()
+        print tasks_scheduled
+        return {'tasks_count': len(tasks_scheduled)}
+
+api.add_resource(HelloWorld, '/now')
 api.add_resource(HelloLater, '/later')
+api.add_resource(ScheduledQueue, '/tasks')
