@@ -10,6 +10,7 @@ from flask.ext.httpauth import HTTPBasicAuth
 from redis import Redis
 from rq import Queue
 from rq_dashboard import RQDashboard
+from rq_scheduler import Scheduler
 
 basedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), '../')
 
@@ -28,7 +29,7 @@ auth = HTTPBasicAuth()
 
 # redis-queue
 qq = Queue(connection=Redis())
-
+sq = Scheduler(connection=Redis())
 
 @app.after_request
 def after_request(response):
