@@ -1,7 +1,7 @@
 __author__ = 'sravi'
 
-from server import api, qq, sq
-from tasks.task import count_words_at_url
+from qq.server import qq, sq, app
+from qq.tasks.task import count_words_at_url
 from flask.ext import restful
 from datetime import timedelta
 
@@ -24,8 +24,5 @@ class ScheduledQueue(restful.Resource):
     def get(self):
         tasks_scheduled = sq.get_jobs()
         print tasks_scheduled
+        print app.config.get('DATABASE')
         return {'tasks_count': len(tasks_scheduled)}
-
-api.add_resource(HelloWorld, '/now')
-api.add_resource(HelloLater, '/later')
-api.add_resource(ScheduledQueue, '/tasks')

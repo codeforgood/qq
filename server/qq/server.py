@@ -3,8 +3,8 @@ __author__ = 'sravi'
 import os
 
 from flask import Flask
+from flask_environments import Environments
 from flask.ext import restful
-from flask.ext.restful import reqparse, Api
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.httpauth import HTTPBasicAuth
 from redis import Redis
@@ -16,7 +16,8 @@ basedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), '../')
 
 app = Flask(__name__)
 RQDashboard(app)
-app.config.from_object('app.config')
+env = Environments(app)
+env.from_yaml(os.path.join(os.getcwd(), 'qq', 'config.yml'))
 
 # flask-restful
 api = restful.Api(app)
@@ -38,4 +39,4 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
 
-import views
+import routes

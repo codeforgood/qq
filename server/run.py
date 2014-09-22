@@ -1,5 +1,5 @@
 __author__ = 'sravi'
 
-from app.server import app
+from qq.server import app
 
 app.run()
