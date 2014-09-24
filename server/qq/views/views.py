@@ -2,21 +2,9 @@ __author__ = 'sravi'
 
 from flask.ext import restful
 from datetime import timedelta
-from qq.server import qq, sq
-from flask import current_app as app
+from offload import async, sched_in, get_tasks_scheduled
+
 from qq.tasks.task import count_words_at_url, query_postgres
-
-
-def async(func, params, result_ttl=500):
-    task = qq.enqueue_call(func=func,
-                           args=params + (app.config,),
-                           result_ttl=result_ttl)
-    return task
-
-
-def sched_in(func, params, timedelta):
-    task = sq.enqueue_in(timedelta, func, params, config=app.config)
-    return task
 
 
 class HelloWorld(restful.Resource):
@@ -33,7 +21,7 @@ class HelloLater(restful.Resource):
 
 class ScheduledQueue(restful.Resource):
     def get(self):
-        tasks_scheduled = sq.get_jobs()
+        tasks_scheduled = get_tasks_scheduled()
         return {'tasks_count': len(tasks_scheduled)}
 
 
