@@ -28,6 +28,18 @@ flask_bcrypt = Bcrypt(app)
 # flask-httpauth
 auth = HTTPBasicAuth()
 
+users = {
+    "john": "hello",
+    "susan": "bye"
+}
+
+
+@auth.get_password
+def get_pw(username):
+    if username in users:
+        return users.get(username)
+    return None
+
 # redis-queue
 qq = Queue(connection=Redis())
 sq = Scheduler(connection=Redis())
